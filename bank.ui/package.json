@@ -1,5 +1,5 @@
 {
-  "name": "bank.gui",
+  "name": "bank.ui",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
