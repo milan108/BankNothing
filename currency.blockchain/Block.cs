@@ -4,7 +4,7 @@ using System.Text;
 
 namespace currency.blockchain
 {
-    class Block
+    public class Block
     {
         public int Index { get; set; }
         public DateTime Timestamp { get; set; }

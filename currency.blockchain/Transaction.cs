@@ -4,7 +4,7 @@ using System.Text;
 
 namespace currency.blockchain
 {
-    class Transaction
+    public class Transaction
     {
         public string Sender { get; set; }
         public string Recipient { get; set; }
