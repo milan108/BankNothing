@@ -19,8 +19,6 @@ namespace currency.blockchain
     {
         public static void Main(string[] args)
         {
-          //  CreateWebHostBuilder(args).Build().Run();
-
             using (var host = WebHost.Start(router => router
                             .MapGet("hello/{name}", (req, res, data) =>
                                 res.WriteAsync($"Hello, {data.Values["name"]}!"))
