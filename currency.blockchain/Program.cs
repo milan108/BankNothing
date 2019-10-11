@@ -43,7 +43,7 @@ namespace currency.blockchain
                 .Build();
 
             return WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://*:5000")
+                .UseUrls("http://*:4000")
                 .UseConfiguration(config)
                 .Configure(app =>
                 {
