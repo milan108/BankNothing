@@ -12,7 +12,6 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 
-
 namespace currency.blockchain
 {
     class Program
@@ -43,7 +42,7 @@ namespace currency.blockchain
                 .Build();
 
             return WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://*:4000")
+                .UseUrls("http://*:5000")
                 .UseConfiguration(config)
                 .Configure(app =>
                 {
