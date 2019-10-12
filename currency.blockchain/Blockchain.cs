@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,11 +18,13 @@ namespace currency.blockchain
         private Block lastBlock => chain.Last();
         private List<Node> nodes = new List<Node>();
 
-        public Blockchain() {
+        public Blockchain()
+        {
             CreateNewBlock(proof: 100, prevHash: "1"); //genesis
         }
 
-        public Block CreateNewBlock(int proof, string prevHash = null) {
+        public Block CreateNewBlock(int proof, string prevHash = null)
+        {
             Block block = new Block
             {
                 Index = chain.Count,
@@ -32,13 +35,13 @@ namespace currency.blockchain
             };
             currentTransactions.Clear();
             chain.Add(block);
-           
+
             return block;
         }
 
         private string GetHash(Block block)
         {
-            string blockText = JsonConvert.SerializeObject(block);  
+            string blockText = JsonConvert.SerializeObject(block);
             return GetSha256(blockText);
         }
 
@@ -72,10 +75,12 @@ namespace currency.blockchain
             return result.StartsWith("0000");
         }
 
-        private bool IsValidChain(List<Block> chain) {
+        private bool IsValidChain(List<Block> chain)
+        {
             int currentIndex = 1;
             var lastBlock = chain.First();
-            while (currentIndex < chain.Count) {
+            while (currentIndex < chain.Count)
+            {
                 var currentBlock = chain.ElementAt(currentIndex);
 
                 if (currentBlock.PrevHash != lastBlock.PrevHash)
@@ -160,7 +165,7 @@ namespace currency.blockchain
         {
             bool replaced = ResolveConflicts();
             string message = replaced ? "was replaced" : "is authoritive";
-            
+
             var response = new
             {
                 Message = $"Our chain {message}",
@@ -181,7 +186,8 @@ namespace currency.blockchain
             return JsonConvert.SerializeObject(response);
         }
 
-        internal string Mine() {
+        internal string Mine()
+        {
             int proof = CreateProofOfWork(lastBlock.Proof, lastBlock.PrevHash);
             var block = CreateNewBlock(proof, lastBlock.PrevHash);
             var response = new

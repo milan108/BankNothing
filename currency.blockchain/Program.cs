@@ -1,54 +1,56 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Net;
-using System.Net.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace currency.blockchain
 {
-    class Program
+    public class Program
     {
         public static void Main(string[] args)
         {
-            using (var host = WebHost.Start(router => router
-                            .MapGet("hello/{name}", (req, res, data) =>
-                                res.WriteAsync($"Hello, {data.Values["name"]}!"))
-                            .MapGet("buenosdias/{name}", (req, res, data) =>
-                                res.WriteAsync($"Buenos dias, {data.Values["name"]}!"))
-                            .MapGet("throw/{message?}", (req, res, data) =>
-                                throw new Exception((string)data.Values["message"] ?? "Uh oh!"))
-                            .MapGet("{greeting}/{name}", (req, res, data) =>
-                                res.WriteAsync($"{data.Values["greeting"]}, {data.Values["name"]}!"))
-                            .MapGet("", (req, res, data) => res.WriteAsync("Hello, World!"))))
-            {
-                Console.WriteLine("Use Ctrl-C to shutdown the host...");
-                host.WaitForShutdown();
-            }
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
-        {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddCommandLine(args)
-                .Build();
-
-            return WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://*:5000")
-                .UseConfiguration(config)
-                .Configure(app =>
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    app.Run(context =>
-                        context.Response.WriteAsync("Hello, World!"));
+                    webBuilder.UseStartup<Startup>();
                 });
+    }
+
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            // app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
