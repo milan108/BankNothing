@@ -11,11 +11,12 @@ using System.Text;
 
 namespace currency.blockchain
 {
+
     [ApiController]
     [Route("")]
     public class BlockchainController : ControllerBase
     {
-        private Blockchain blockchain = new Blockchain();
+        private static Blockchain blockchain = new Blockchain();
 
         [HttpGet("/mine")]
         public string Mine()

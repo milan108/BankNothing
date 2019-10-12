@@ -160,7 +160,6 @@ namespace currency.blockchain
             return false;
         }
 
-
         internal string Consensus()
         {
             bool replaced = ResolveConflicts();
