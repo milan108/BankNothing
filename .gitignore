@@ -3,7 +3,7 @@
 # .NET Core
 .vs
 **/.vs
-
+**/*.code-workspace
 **/[Dd]ebug/
 **/[Dd]ebugPublic/
 **/[Rr]elease/
